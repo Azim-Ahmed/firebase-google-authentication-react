@@ -20,7 +20,7 @@ function App() {
     .then(res => {
       const {displayName, photoURL ,email} = res.user;
       const signedInUser = {
-        isSignedIn : true,
+        isSignedIn :  true,
         name : displayName,
         email : email,
         photo : photoURL
@@ -32,10 +32,26 @@ function App() {
       console.log(err , err.message);
     })
   }
+  const handleSignOut = () => {
+    firebase.auth().signOut()
+    .then(res => {
+      const signOutUser = {
+        isSignedIn : false,
+        name :'',
+        email : '',
+        photo : ''
+      }
+      setUsers(signOutUser)
+    })
+    .catch(err => 
+      console.log(err))
+  }
   return (
     <div className="App">
-     
-    <button onClick = {handleClick}>sign in</button>
+  {
+    users.isSignedIn?<button onClick = {handleSignOut}>sign out</button> :  <button onClick = {handleClick}>sign in</button>
+  }
+
     {
       users.isSignedIn && <div><p>Welcome , {users.name}</p>
       <p>Here is your Email : {users.email}</p>
